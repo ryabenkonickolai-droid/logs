@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  role_name: alloy
+  author: Ishan Jain, voidquark, Ryabenko Nickolai
+  description: Role to Install and Configure Grafana Alloy, with rsyslog(JSON) & logrotate customisation
+  license: "GPL-3.0-or-later"
+  min_ansible_version: "2.13"
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - alloy
+    - grafana
+    - observability
+    - monitoring
+    - opentelemetry
+    - telemetry

@@ -1,0 +1,42 @@
+// Ansible Managed
+
+// ---------- PROCESSING LOGS (LABELS) ----------
+
+loki.process "add_labels" {
+  stage.labels {
+    values = {
+      job = "job",
+    }
+  }
+
+  stage.static_labels {
+    values = {
+      host         = constants.hostname,
+      distribution = "Ubuntu",
+    }
+  }
+
+  forward_to = [loki.write.loki.receiver]
+}
+
+
+// ---------- COLLECTING LOGS (SOURCES) ----------
+
+loki.source.file "auth_logs" {
+  targets    = [{ "__path__" = "/var/log/auth.json", "job" = "auth-logs" }]
+  forward_to = [loki.process.add_labels.receiver]
+}
+
+loki.source.file "system_logs" {
+  targets    = [{ "__path__" = "/var/log/syslog.json", "job" = "system-logs" }]
+  forward_to = [loki.process.add_labels.receiver]
+}
+
+
+// ---------- SENDING LOGS (WRITE) ----------
+
+loki.write "loki" {
+  endpoint {
+    url = "http://monitoring02:3100/loki/api/v1/push"
+  }
+}
