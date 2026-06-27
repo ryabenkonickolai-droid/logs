@@ -1,0 +1,17 @@
+#Ansible managed
+# JSON Template
+template(name="json-template" type="list") {
+    constant(value="{")
+    constant(value="\"@timestamp\":\"")     property(name="timereported" dateFormat="rfc3339")
+    constant(value="\",\"host\":\"")        property(name="hostname")
+    constant(value="\",\"severity\":\"")    property(name="syslogseverity-text")
+    constant(value="\",\"facility\":\"")    property(name="syslogfacility-text")
+    constant(value="\",\"program\":\"")     property(name="programname")
+    constant(value="\",\"message\":\"")     property(name="msg" format="json")
+    constant(value="\"}\n")
+}
+
+
+# logs input
+auth,authpriv.*                         /var/log/auth.json;json-template
+*.*;auth,authpriv.none       /var/log/syslog.json;json-template

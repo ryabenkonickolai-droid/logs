@@ -1,0 +1,17 @@
+#Custom
+- name: Ensure correct permissions for /var/log directory
+  ansible.builtin.file:
+    path: /var/log
+    state: directory
+    owner: root
+    group: syslog
+    mode: '0775'
+
+- name: Deploy configuration file logrotate.d/rsyslog-json
+  ansible.builtin.template:
+    src: rsyslog-json.j2
+    dest: /etc/logrotate.d/rsyslog-json
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart alloy
